@@ -12,17 +12,15 @@ def get_gamma(input):
     else:
         return gamma[input]
 
-def create_app(test_config=None):
-    pi = pigpio.pi()
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+pi = pigpio.pi()
+# create and configure the app
+app = Flask(__name__, instance_relative_config=True)
 
-    @app.route('/c/<color>')
-    def setColor(color):
-        r, g, b = get_gamma(color.split(','))
-        pi.set_PWM_dutycycle(17, r)
-        pi.set_PWM_dutycycle(27, g)
-        pi.set_PWM_dutycycle(22, b)
-        return f'Colors {r} {g} {b}'
+@app.route('/c/<color>')
+def setColor(color):
+    r, g, b = get_gamma(color.split(','))
+    pi.set_PWM_dutycycle(17, r)
+    pi.set_PWM_dutycycle(27, g)
+    pi.set_PWM_dutycycle(22, b)
+    return f'Colors {r} {g} {b}'
 
-    return app
